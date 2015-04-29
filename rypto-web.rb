@@ -1,6 +1,16 @@
 require 'sinatra'
 require 'rypto'
 require 'json'
+require 'haml'
+
+get '/' do
+  redirect to('/game')
+end
+
+get '/game' do
+  @hand = Rypto::Hand.new
+  haml :game
+end
 
 get '/solve/postfix/:card1/:card2/:card3/:card4/:card5/:target.:format' do |*args|
   solve args, :postfix
