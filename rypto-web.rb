@@ -8,21 +8,39 @@ get '/' do
 end
 
 get '/game' do
-  @hand         = Rypto::Hand.new
-  @new_game_url = '/game'
-  @solve_url    = '/game/solve/%s,%s' % [@hand.krypto_cards.join(','), @hand.target_card]
+  @hand = Rypto::Hand.new
+  setup_urls
+  render_game
+end
 
-  haml :game, :layout => :'layouts/game'
+get '/game/:c1,:c2,:c3,:c4,:c5,:c6' do
+  @hand = hand_from_params
+  setup_urls
+  render_game
 end
 
 get '/game/solve/:c1,:c2,:c3,:c4,:c5,:c6' do
-  @hand         = Rypto::Hand.new((1..5).map {|i| params["c#{i}".to_sym].to_i}, params[:c6].to_i)
-  @new_game_url = '/game'
-  @solutions    = @hand.solve.infix
+  @hand      = hand_from_params
+  @solutions = @hand.solve.infix
+  setup_urls
+  render_game
+end
 
+def render_game
   haml :game, :layout => :'layouts/game'
 end
 
+def setup_urls
+  cards = '%s,%s' % [@hand.krypto_cards.join(','), @hand.target_card]
+
+  @new_game_url  = '/game'
+  @this_game_url = '/game/%s'       % cards
+  @solve_url     = '/game/solve/%s' % cards
+end
+
+def hand_from_params
+  Rypto::Hand.new((1..5).map {|i| params["c#{i}".to_sym].to_i}, params[:c6].to_i)
+end
 
 get '/solve/postfix/:card1/:card2/:card3/:card4/:card5/:target.:format' do |*args|
   solve args, :postfix

@@ -7,5 +7,13 @@
 
 %a{:href => @new_game_url}
   %button New Game
-%a{:href => @solve_url}
-  %button Solve Game
+%a{:href => @this_game_url}
+  %button This Game
+
+- if @solutions
+  %ul.solutions
+    - @solutions.each do |solution|
+      %li= solution
+- else
+  %a{:href => @solve_url}
+    %button Solve Game
