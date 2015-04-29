@@ -37,3 +37,11 @@ div.krypto-equals {
   padding:          35px 10px 0 0;
   font-size:        110px;
 }
+
+button {
+  padding: 10px 40px;
+  float:   left;
+  clear:   both;
+  margin:  30px 0 0 400px;
+  width:   200px;
+}

@@ -5,8 +5,7 @@
 
 %div.krypto-card= @hand.target_card
 
-%link{:href => "css/krypto.css", :rel => "stylesheet", :type => "text/css"}
-
-%script{:src => "js/jquery-1.11.2.min.js", :type => "text/javascript"}
-%script{:src => "js/krypto.js",            :type => "text/javascript"}
-
+%a{:href => @new_game_url}
+  %button New Game
+%a{:href => @solve_url}
+  %button Solve Game

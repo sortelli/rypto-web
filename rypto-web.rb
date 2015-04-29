@@ -8,9 +8,21 @@ get '/' do
 end
 
 get '/game' do
-  @hand = Rypto::Hand.new
-  haml :game
+  @hand         = Rypto::Hand.new
+  @new_game_url = '/game'
+  @solve_url    = '/game/solve/%s,%s' % [@hand.krypto_cards.join(','), @hand.target_card]
+
+  haml :game, :layout => :'layouts/game'
 end
+
+get '/game/solve/:c1,:c2,:c3,:c4,:c5,:c6' do
+  @hand         = Rypto::Hand.new((1..5).map {|i| params["c#{i}".to_sym].to_i}, params[:c6].to_i)
+  @new_game_url = '/game'
+  @solutions    = @hand.solve.infix
+
+  haml :game, :layout => :'layouts/game'
+end
+
 
 get '/solve/postfix/:card1/:card2/:card3/:card4/:card5/:target.:format' do |*args|
   solve args, :postfix
